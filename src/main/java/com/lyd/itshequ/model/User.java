@@ -9,10 +9,18 @@ package com.lyd.itshequ.model;
 public class User {
 	private Integer id;
 	private String name;
-	private String acountId;
+	private String accountId;
 	private String token;
 	private Long gmtCreate;
 	private Long gmtModified;
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
 
 	public Integer getId() {
 		return id;
@@ -28,14 +36,6 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getAcountId() {
-		return acountId;
-	}
-
-	public void setAcountId(String acountId) {
-		this.acountId = acountId;
 	}
 
 	public String getToken() {

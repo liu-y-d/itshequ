@@ -30,7 +30,7 @@ public class GithubProvider {
 		Request request = new Request.Builder().url("https://github.com/login/oauth/access_token").post(body).build();
 		try (Response response = client.newCall(request).execute()) {
 			String string = response.body().string();
-			System.out.println(string);//access_token=c231d1e359bed82f6f98b2a2d86eb916478b56d1&scope=user&token_type=bearer
+			// System.out.println(string);//access_token=c231d1e359bed82f6f98b2a2d86eb916478b56d1&scope=user&token_type=bearer
 			String token = string.split("&")[0].split("=")[1];
 			return token;
 		} catch (Exception e) {

@@ -39,7 +39,7 @@ public class IndexController {
 				}
 			}
 		}
-		System.out.println("cookie为空");
-		return "index";
+		return "Index";
 	}
+
 }

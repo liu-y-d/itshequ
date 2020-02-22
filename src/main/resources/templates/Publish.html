@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>post-BaJi</title>
+    <!--start 引入bootstrap-->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <script src="bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/Me.css">
+    <!--end-->
+</head>
+<body class="me">
+<!--start 导航条-->
+<nav class="navbar navbar-default" style="background-color: #66afe9">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">BaJi</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="请输入关键字">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="/publish">发布帖子</a>
+                </li>
+                <li th:if="${session.user == null}"><a
+                        href="https://github.com/login/oauth/authorize?client_id=082ef1a6bff5e94b746a&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:utext="${session.user.name}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<!--end导航条-->
+<div class="container-fluid" >
+    <div class="container-fluid" style="margin: 30px 50px 30px 50px;background-color: white">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h2><span class="glyphicon glyphicon-send" aria-hidden="true"></span>   发起</h2>
+                <hr>
+                <form action="/publish" method="post">
+                    <div class="form-group">
+                        <lable for="title" style="font-weight: bold">标题 (简单扼要) :</lable>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题....">
+                    </div>
+                    <div class="form-group">
+                        <lable for="description" style="font-weight: bold">帖子内容 (必填，参照右侧提示) :</lable>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <lable for="tag" style="font-weight: bold">添加标签</lable>
+                        <input type="text" class="form-control" id="tag" name="tag" placeholder="帖子标签">
+                    </div>
+                    <!--th:onmouseover="${user}==null?tip:''"-->
+                    <button type="submit" class="btn btn-success" style="float: right" th:disabled="${session.user}==null?true:false" onmouseover="tip()" onclick="return post()">发布</button>
+                </form>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h3>发帖规则</h3>
+                1、用户的言行不得违反《计算机信息网络国际联网安全保护管理办法》、《互联网信息服务管理办法》、《互联网电子公告服务管理规定》、《维护互联网安全的决定》、《互联网新闻信息服务管理规定》等相关法律规定。
+                2、在不同贴吧发帖，还需要遵循当前贴吧吧主对该吧的相关规定。
+                3、不能在贴吧中发表含有猥亵、色情、人身攻击和反政府言论等非法或侵权言论的信息；
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function tip() {
+        if ($(".btn-success").prop("disabled")==true){
+            const x = confirm("用户未登录，点击确定跳转登录页面");
+            if (x==true){
+                //跳转到登录页面
+                $(location).attr('href', 'http://localhost:8888/');
+            }else {
+                return;
+            }
+        }
+    }
+
+    function post() {
+        if ($("#title").val().trim()==""||$("#description").val().trim()==""||$("#tag").val().trim()==""){
+            alert("信息不能为空");
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

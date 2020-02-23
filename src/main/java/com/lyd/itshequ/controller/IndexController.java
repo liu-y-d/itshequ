@@ -1,13 +1,22 @@
 package com.lyd.itshequ.controller;
 
+import com.lyd.itshequ.bean.PageDTO;
+import com.lyd.itshequ.bean.PostDTO;
+import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.mapper.UserMapper;
+import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
+import com.lyd.itshequ.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @ClassName IndexController
@@ -17,28 +26,15 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Controller
 public class IndexController {
+
 	@Autowired
-	private UserMapper userMapper;
+	private PostService postService;
 
 	@GetMapping("/")
-	public String index(HttpServletRequest request){
-		// 获取Cookies
-		Cookie[] cookies = request.getCookies();
-		if (cookies.length!=0){
-			// 如果Cookies不为空则寻找cookies中名为token的cookie
-			for (Cookie cookie : cookies){
-				if ("token".equals(cookie.getName())){
-					String token = cookie.getValue();
-					// 和数据库中的用户信息进行比较
-					User user = userMapper.findByToken(token);
-					if (user!=null){
-						// 将用户添加进session
-						request.getSession().setAttribute("user",user);
-					}
-					break;
-				}
-			}
-		}
+	public String index(HttpServletRequest request, Model model, @RequestParam(name = "page", defaultValue = "1") Integer page, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+		// 拿到帖子列表
+		PageDTO pageDTO = postService.getPostAll(page,pageSize);
+		model.addAttribute("posts", pageDTO);
 		return "Index";
 	}
 

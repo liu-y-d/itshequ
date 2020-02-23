@@ -1,15 +1,16 @@
-package com.lyd.itshequ.model;
+package com.lyd.itshequ.bean;
 
+import com.lyd.itshequ.model.User;
 import lombok.Data;
 
 /**
- * @ClassName Post
+ * @ClassName PostDTO
  * @Description TODO
  * @Author Liuyunda
- * @Date 2020/2/22 20:33
+ * @Date 2020/2/23 12:06
  **/
 @Data
-public class Post {
+public class PostDTO {
 	private Integer id;
 	private String title;
 	private String description;
@@ -20,4 +21,5 @@ public class Post {
 	private Integer watchCount;
 	private Integer likeCount;
 	private String tag;
+	private User user;
 }

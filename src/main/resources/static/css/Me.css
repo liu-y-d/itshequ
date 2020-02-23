@@ -1,3 +1,15 @@
 .me{
     background: url('images/5.jpg')
 }
+.img-me{
+    width: 38px;
+    height: 38px;
+}
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+.profile-rightList{
+    margin-top: 20px;
+}

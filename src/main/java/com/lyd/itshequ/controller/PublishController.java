@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,8 +25,12 @@ public class PublishController {
 	private PostMapper postMapper;
 
 	@GetMapping("/publish")
-	public String publish() {
-		return "Publish";
+	public String publish(HttpServletRequest request,Model model) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user == null){
+			model.addAttribute("errormsg","未获取到登录信息");
+			return "errorPage";
+		}return "Publish";
 	}
 
 	@PostMapping("/publish")
@@ -35,11 +38,11 @@ public class PublishController {
 		User user = (User) request.getSession().getAttribute("user");
 		if (user == null){
 			model.addAttribute("errormsg","未获取到登录信息");
-			return "error";
+			return "errorPage";
 		}
 		if (StringUtils.isBlank(post.getTitle())||StringUtils.isBlank(post.getDescription())||StringUtils.isBlank(post.getTag())){
 			model.addAttribute("errormsg","填写内容不能为空");
-			return "error";
+			return "errorPage";
 		}
 		post.setCreator(user.getId());
 		post.setGmtCreate(user.getGmtCreate());

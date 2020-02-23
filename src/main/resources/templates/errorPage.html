@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BaJi</title>
+    <!--start 引入bootstrap-->
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <script src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/Me.css">
+    <!--end-->
+</head>
+<body class="me">
+<!--start 导航条-->
+<div th:replace="navbar :: navbar"></div>
+<!--end导航条-->
+<h1 th:text="${errormsg}"></h1>
+</body>
+</html>

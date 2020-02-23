@@ -25,11 +25,13 @@
                     <div  class="media" th:each="post:${posts.data}">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-me" th:src="${post.user.avatarUrl}"  onerror=src="/css/images/3.jpg" width="38">
+                                <img class="media-object img-me img-rounded" th:src="${post.user.avatarUrl}"  onerror=src="/css/images/3.jpg" width="38">
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading" th:text="${post.title}"></h4>
+                            <h4 class="media-heading" >
+                                <a th:href="@{'/post/'+ ${post.id}}" th:text="${post.title}" ></a>
+                            </h4>
                             [[${post.description}]]<br/>
                             <span class="text-desc">
                             <span th:text="${post.commentCount}"></span>个回复 · <span th:text="${post.watchCount}"></span> 次浏览 · <span th:text="${#dates.format(post.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>

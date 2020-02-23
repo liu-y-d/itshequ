@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 	private UserMapper userMapper;
 
 	@Override
-	public PageDTO getPostById(Integer id, Integer page, Integer pageSize) {
+	public PageDTO getPostByCreator(Integer id, Integer page, Integer pageSize) {
 		Integer pageSum= postMapper.pageSumById(id);
 		if (page<1){
 			page = 1;
@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
 			page = pageSum/pageSize+1;
 		}
 		Integer offSize = pageSize * (page-1);
-		List<Post> postAll = postMapper.getPostById(id,offSize,pageSize);
+		List<Post> postAll = postMapper.getPostByCreator(id,offSize,pageSize);
 		List<PostDTO> postDTOS = new ArrayList<>();
 		PageDTO pageDTO = new PageDTO();
 		for (Post post : postAll){
@@ -79,5 +79,15 @@ public class PostServiceImpl implements PostService {
 
 		pageDTO.setPageInfo(pageSum,page,pageSize);
 		return pageDTO;
+	}
+
+	@Override
+	public PostDTO getPostById(Integer id) {
+		Post post = postMapper.getPostById(id);
+		PostDTO postDTO = new PostDTO();
+		BeanUtils.copyProperties(post,postDTO);
+		User user = userMapper.findById(post.getCreator());
+		postDTO.setUser(user);
+		return postDTO;
 	}
 }

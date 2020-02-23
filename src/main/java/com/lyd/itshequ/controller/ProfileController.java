@@ -30,7 +30,7 @@ public class ProfileController {
 		}
 		if ("myPost".equals(action)){
 
-			PageDTO pageDTO = postService.getPostById(user.getId(),page,pageSize);
+			PageDTO pageDTO = postService.getPostByCreator(user.getId(),page,pageSize);
 			model.addAttribute("posts", pageDTO);
 			model.addAttribute("section","myPost");
 			model.addAttribute("sectionName","我的帖子");

@@ -90,4 +90,17 @@ public class PostServiceImpl implements PostService {
 		postDTO.setUser(user);
 		return postDTO;
 	}
+
+	@Override
+	public void createOrUpdate(Post post) {
+		Post postById = postMapper.getPostById(post.getId());
+		if (postById!=null){
+			post.setGmtCreate(System.currentTimeMillis());
+			postMapper.updatePost(post);
+		}else {
+			post.setGmtCreate(System.currentTimeMillis());
+			post.setGmtModified(System.currentTimeMillis());
+			postMapper.create(post);
+		}
+	}
 }

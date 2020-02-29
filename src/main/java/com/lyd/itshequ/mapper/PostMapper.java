@@ -1,10 +1,7 @@
 package com.lyd.itshequ.mapper;
 
 import com.lyd.itshequ.model.Post;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,4 +24,6 @@ public interface PostMapper {
 	Integer pageSumById(@Param("id")Integer id);
 	@Select("select * from post where id = #{id}")
 	Post getPostById(@Param("id") Integer id);
+	@Update("update post set title = #{title},description = #{description},tag = #{tag},gmt_create=#{gmtCreate} where id =#{id}")
+	void updatePost(Post post);
 }

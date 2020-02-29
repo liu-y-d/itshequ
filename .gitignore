@@ -29,3 +29,14 @@ build/
 
 ### VS Code ###
 .vscode/
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+src/main/resources/static/css/images/3.jpg
+src/main/resources/static/css/images/4.jpg
+src/main/resources/static/css/images/5.jpg

@@ -5,6 +5,7 @@ import com.lyd.itshequ.bean.GithubUser;
 import com.lyd.itshequ.commponent.GithubProvider;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.User;
+import com.lyd.itshequ.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ import java.util.UUID;
 public class AuthorizeController {
 	@Autowired
 	private GithubProvider githubProvider;
+	@Autowired
+	private UserService userService;
 	@Value("${github.client.id}")
 	private String clientId;
 
@@ -57,10 +60,8 @@ public class AuthorizeController {
 			user.setToken(token);
 			user.setName(githubUser.getName());
 			user.setAccountId(String.valueOf(githubUser.getId()));
-			user.setGmtCreate(System.currentTimeMillis());
-			user.setGmtModified(user.getGmtCreate());
 			user.setAvatarUrl(githubUser.getAvatarUrl());
-			userMapper.insert(user);
+			userService.createOrUpdate(user);
 			//登录成功 写入cookie和session
 			response.addCookie(new Cookie("token",token));
 			// request.getSession().setAttribute("user",githubUser);
@@ -71,4 +72,14 @@ public class AuthorizeController {
 		}
 	}
 
+
+	@GetMapping("/logout")
+	public String logOut(HttpServletRequest request,HttpServletResponse response){
+		request.getSession().removeAttribute("user");
+
+		Cookie cookie = new Cookie("token", null);//删除前必须要new 一个valu为空；
+		cookie.setMaxAge(0);//生命周期设置为0
+		response.addCookie(cookie);
+		return "redirect:/";
+	}
 }

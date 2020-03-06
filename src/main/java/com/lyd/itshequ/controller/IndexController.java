@@ -37,5 +37,9 @@ public class IndexController {
 		model.addAttribute("posts", pageDTO);
 		return "Index";
 	}
+	@GetMapping("/toLogin")
+	public String toLogin(){
+		return "Login";
+	}
 
 }

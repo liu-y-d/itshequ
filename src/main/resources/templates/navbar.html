@@ -27,12 +27,12 @@
                         <li class="dropdown" th:if="${session.user != null}">
                             <img th:src="${session.user.avatarUrl}" onerror=src="/css/images/3.jpg" class="img-circle" height="30px" style="margin-top: 10px">
                         </li>
-                        <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=082ef1a6bff5e94b746a&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a></li>
+                        <li th:if="${session.user == null}"><a href="/toLogin">登录</a></li>
                         <li class="dropdown" th:if="${session.user != null}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >[[${session.user.name}]]<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/profile/(action='myPost')}">我的帖子</a></li>
-                                <li><a href="#">退出登录</a></li>
+                                <li><a href="/logout">退出登录</a></li>
                             </ul>
                         </li>
 

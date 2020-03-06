@@ -22,7 +22,9 @@ public class PostController {
 	private PostService postService;
 	@GetMapping("/post/{id}")
 	public String post(@PathVariable("id")Integer id, Model model){
-		PostDTO postDTO = postService.getPostById(id);
+		//PostDTO postDTO = postService.getPostById(id);
+		//累加阅读数
+		PostDTO postDTO = postService.incView(id);
 		model.addAttribute("postDTO",postDTO);
 		return "Post";
 	}

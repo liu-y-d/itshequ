@@ -5,10 +5,10 @@
     <meta name="referrer" content="no-referrer">
     <title>post-BaJi</title>
     <!--start 引入bootstrap-->
-    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <script src="bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/Me.css">
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <script src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/Me.css">
     <!--end-->
 </head>
 <body class="me">
@@ -19,20 +19,21 @@
     <div class="container-fluid" style="margin: 30px 50px 30px 50px;background-color: white">
         <div class="row">
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
-                <h2><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;发贴</h2>
+                <h2><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;[[${post.id==null}?'发贴':'编辑']]</h2>
                 <hr>
                 <form action="/publish" method="post">
+                    <input type="hidden" name="id" th:value="${post.id}">
                     <div class="form-group">
                         <lable for="title" style="font-weight: bold">标题 (简单扼要) :</lable>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题....">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="帖子标题...." th:value="${post.title}">
                     </div>
                     <div class="form-group">
                         <lable for="description" style="font-weight: bold">帖子内容 (必填，参照右侧提示) :</lable>
-                        <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="10" th:utext="${post.description}"></textarea>
                     </div>
                     <div class="form-group">
                         <lable for="tag" style="font-weight: bold">添加标签</lable>
-                        <input type="text" class="form-control" id="tag" name="tag" placeholder="帖子标签">
+                        <input type="text" class="form-control" id="tag" name="tag" placeholder="帖子标签" th:value="${post.tag}">
                     </div>
                     <!--th:onmouseover="${user}==null?tip:''"-->
                     <button type="submit" class="btn btn-success" style="float: right" th:disabled="${session.user}==null?true:false" onmouseover="tip()" onclick="return post()">发布</button>

@@ -2,6 +2,9 @@ package com.lyd.itshequ.service;
 
 import com.lyd.itshequ.bean.PageDTO;
 import com.lyd.itshequ.bean.PostDTO;
+import com.lyd.itshequ.exception.IMeErrorCode;
+import com.lyd.itshequ.exception.MeErrorCode;
+import com.lyd.itshequ.exception.MeExceptions;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.Post;
@@ -84,10 +87,45 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostDTO getPostById(Integer id) {
 		Post post = postMapper.getPostById(id);
+		if (post == null){
+			throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
+		}
 		PostDTO postDTO = new PostDTO();
 		BeanUtils.copyProperties(post,postDTO);
 		User user = userMapper.findById(post.getCreator());
 		postDTO.setUser(user);
+		return postDTO;
+	}
+
+	@Override
+	public void createOrUpdate(Post post) {
+		Post postById = postMapper.getPostById(post.getId());
+		if (postById!=null){
+			post.setGmtCreate(System.currentTimeMillis());
+			int i = postMapper.updatePost(post);
+			if (i != 1){
+				throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
+			}
+		}else {
+			post.setGmtCreate(System.currentTimeMillis());
+			post.setGmtModified(System.currentTimeMillis());
+			postMapper.create(post);
+		}
+	}
+
+	@Override
+	public PostDTO incView(Integer id) {
+		Post postById = postMapper.getPostById(id);
+		if (postById == null){
+			throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
+
+		}
+		postById.setWatchCount(postById.getWatchCount()+1);
+		int i = postMapper.updatePost(postById);
+		PostDTO postDTO = new PostDTO();
+		User user = userMapper.findById(postById.getCreator());
+		postDTO.setUser(user);
+		BeanUtils.copyProperties(postById,postDTO);
 		return postDTO;
 	}
 }

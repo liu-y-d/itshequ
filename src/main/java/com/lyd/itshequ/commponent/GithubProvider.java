@@ -3,6 +3,8 @@ package com.lyd.itshequ.commponent;
 import com.alibaba.fastjson.JSON;
 import com.lyd.itshequ.bean.AccessTokenDTO;
 import com.lyd.itshequ.bean.GithubUser;
+import com.lyd.itshequ.exception.MeErrorCode;
+import com.lyd.itshequ.exception.MeExceptions;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -52,12 +54,11 @@ public class GithubProvider {
 				.url("https://api.github.com/user?access_token=" + accessToken)
 				.build();
 		try (
-				Response response = client.newCall(request).execute()) {
+			Response response = client.newCall(request).execute()) {
 			String string = response.body().string();
 			return JSON.parseObject(string, GithubUser.class);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new MeExceptions(MeErrorCode.LOGIN_TIME_OUT);
 		}
-		return null;
 	}
 }

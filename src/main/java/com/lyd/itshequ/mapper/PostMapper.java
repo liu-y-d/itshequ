@@ -1,7 +1,10 @@
 package com.lyd.itshequ.mapper;
 
 import com.lyd.itshequ.model.Post;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

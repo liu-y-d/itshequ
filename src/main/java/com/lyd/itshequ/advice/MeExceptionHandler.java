@@ -1,21 +1,53 @@
 package com.lyd.itshequ.advice;
 
+import com.alibaba.fastjson.JSON;
+import com.lyd.itshequ.bean.ResultDTO;
+import com.lyd.itshequ.exception.MeErrorCode;
 import com.lyd.itshequ.exception.MeExceptions;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 @ControllerAdvice
 public class MeExceptionHandler {
     @ExceptionHandler(Exception.class)
-    ModelAndView handler(Model model,Throwable e){
+    Object handler(Model model, Throwable e, HttpServletRequest request, HttpServletResponse response){
         System.out.println("拦截了错误");
-        if (e instanceof MeExceptions){
-            model.addAttribute("message",e.getMessage());
+        String contentType = request.getContentType();
+        if ("application/json".equals(contentType)){
+            ResultDTO resultDTO = null;
+            //返回json
+            if (e instanceof MeExceptions){
+                resultDTO= ResultDTO.errorOf((MeExceptions) e);
+            }else{
+                resultDTO= ResultDTO.errorOf(MeErrorCode.SYS_ERROR);
+            }
+            try {
+                response.setContentType("application/json");
+                response.setStatus(200);
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter writer = response.getWriter();
+                writer.write(JSON.toJSONString(resultDTO));
+                writer.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }else{
-            model.addAttribute("message","系统出现错误");
+            //页面跳转
+            if (e instanceof MeExceptions){
+                model.addAttribute("message",e.getMessage());
+            }else{
+                model.addAttribute("message",MeErrorCode.SYS_ERROR.getMessage());
+            }
+            return new ModelAndView("error");
         }
-        return new ModelAndView("error");
+
     }
 }

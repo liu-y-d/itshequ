@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
 	private UserMapper userMapper;
 
 	@Override
-	public PageDTO getPostByCreator(Integer id, Integer page, Integer pageSize) {
+	public PageDTO getPostByCreator(Long id, Integer page, Integer pageSize) {
 		Integer pageSum= postMapper.pageSumById(id);
 		if (page<1){
 			page = 1;
@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDTO getPostById(Integer id) {
+	public PostDTO getPostById(Long id) {
 		Post post = postMapper.getPostById(id);
 		if (post == null){
 			throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
@@ -108,16 +108,18 @@ public class PostServiceImpl implements PostService {
 		}else {
 			post.setGmtCreate(System.currentTimeMillis());
 			post.setGmtModified(System.currentTimeMillis());
+			post.setWatchCount(0);
+			post.setCommentCount(0);
+			post.setLikeCount(0);
 			postMapper.create(post);
 		}
 	}
 
 	@Override
-	public PostDTO incView(Integer id) {
+	public PostDTO incView(Long id) {
 		Post postById = postMapper.getPostById(id);
 		if (postById == null){
 			throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
-
 		}
 		postById.setWatchCount(postById.getWatchCount()+1);
 		int i = postMapper.updatePost(postById);

@@ -10,12 +10,12 @@ import lombok.Data;
  **/
 @Data
 public class Post {
-	private Integer id;
+	private Long id;
 	private String title;
 	private String description;
 	private Long gmtCreate;
 	private Long gmtModified;
-	private Integer creator;
+	private Long creator;
 	private Integer commentCount;
 	private Integer watchCount;
 	private Integer likeCount;

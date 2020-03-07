@@ -17,3 +17,32 @@
     color: #999999;
     font-size: 13px;
 }
+.media-body{
+    padding-top: 10px
+}
+.comment{
+   margin: 10px 0;
+}
+.comment-button{
+    float: right;
+    margin-bottom: 10px;
+}
+.dianzan{
+    margin-right: 15px;
+}
+.menu{
+    color: #999;
+    margin-top: 5px;
+}
+.menu .myIcon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .active{
+    color: #499ef3;
+
+}
+.menu .myIcon:hover{
+    color: #499ef3;
+}

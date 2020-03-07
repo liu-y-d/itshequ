@@ -10,6 +10,15 @@
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/Me.css">
     <!--end-->
+    <script>
+        window.onload = function () {
+            let item = window.localStorage.getItem("closable");
+            if (item === "true"){
+                window.close();
+                window.localStorage.removeItem("closable");
+            }
+        }
+    </script>
 </head>
 <body class="me">
 <!--start 导航条-->

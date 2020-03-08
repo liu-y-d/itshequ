@@ -48,6 +48,8 @@ public class CommentServiceImpl implements CommentService{
                 throw new MeExceptions(MeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            comment.setCommentCount(dbComment.getCommentCount()+1);
+            commentMapper.incCommentCount(comment);
         }else{
             //回复问题
             Post postById = postMapper.getPostById(comment.getParentId());

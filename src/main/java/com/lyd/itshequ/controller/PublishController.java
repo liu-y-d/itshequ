@@ -47,7 +47,9 @@ public class PublishController {
 			model.addAttribute("errormsg","未获取到登录信息");
 			return "errorPage";
 		}
-		if (StringUtils.isBlank(post.getTitle())||StringUtils.isBlank(post.getDescription())||StringUtils.isBlank(post.getTag())){
+		if (StringUtils.isBlank(post.getTitle())
+				||StringUtils.isBlank(post.getDescription())
+				||StringUtils.isBlank(post.getTag())){
 			model.addAttribute("errormsg","填写内容不能为空");
 			return "errorPage";
 		}
@@ -55,7 +57,6 @@ public class PublishController {
 		// postMapper.create(post);
 		postService.createOrUpdate(post);
 		return "redirect:/";
-
 	}
 
 	@GetMapping("/publish/{id}")

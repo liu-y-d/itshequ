@@ -8,12 +8,14 @@ import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName PostServiceImpl
@@ -128,5 +130,23 @@ public class PostServiceImpl implements PostService {
 		postDTO.setUser(user);
 		BeanUtils.copyProperties(postById,postDTO);
 		return postDTO;
+	}
+
+	@Override
+	public List<PostDTO> selectByRelated(PostDTO postById) {
+		if (StringUtils.isBlank(postById.getTag())){
+			return new ArrayList<>();
+		}
+		String newTag = StringUtils.replace(postById.getTag(), ",", "|");
+		Post post = new Post();
+		post.setId(postById.getId());
+		post.setTag(newTag);
+		List<Post> posts = postMapper.queryByTag(post);
+		List<PostDTO> postDTOS = posts.stream().map(p -> {
+			PostDTO postDTO = new PostDTO();
+			BeanUtils.copyProperties(p,postDTO);
+			return postDTO;
+		}).collect(Collectors.toList());
+		return postDTOS;
 	}
 }

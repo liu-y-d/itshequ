@@ -1,6 +1,7 @@
 package com.lyd.itshequ.controller;
 
 import com.lyd.itshequ.bean.PostDTO;
+import com.lyd.itshequ.cache.TagCache;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
@@ -37,6 +38,7 @@ public class PublishController {
 		}
 
 		model.addAttribute("post",new Post());
+		model.addAttribute("tags", TagCache.get());
 		return "Publish";
 	}
 
@@ -53,9 +55,15 @@ public class PublishController {
 			model.addAttribute("errormsg","填写内容不能为空");
 			return "errorPage";
 		}
+		String valid = TagCache.isValid(post.getTag());
+		if (StringUtils.isNotBlank(valid)){
+			model.addAttribute("errormsg","输入非法标签"+valid);
+			return "errorPage";
+		}
 		post.setCreator(user.getId());
 		// postMapper.create(post);
 		postService.createOrUpdate(post);
+		model.addAttribute("tags", TagCache.get());
 		return "redirect:/";
 	}
 
@@ -63,6 +71,7 @@ public class PublishController {
 	public String edit(@PathVariable("id")Long id,Model model){
 		PostDTO postById = postService.getPostById(id);
 		model.addAttribute("post",postById);
+		model.addAttribute("tags", TagCache.get());
 		return "publish";
 	}
 }

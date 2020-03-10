@@ -1,5 +1,6 @@
 package com.lyd.itshequ.mapper;
 
+import com.lyd.itshequ.bean.PostDTO;
 import com.lyd.itshequ.model.Post;
 import org.apache.ibatis.annotations.*;
 
@@ -26,4 +27,7 @@ public interface PostMapper {
 	Post getPostById(@Param("id") Long id);
 	@Update("update post set title = #{title},description = #{description},tag = #{tag},gmt_create=#{gmtCreate},watch_count = #{watchCount},comment_count = #{commentCount} where id =#{id}")
 	int updatePost(Post post);
+
+	@Select("select * from post where id!=#{id} and tag REGEXP #{tag} order by gmt_create desc")
+	List<Post> queryByTag(Post post);
 }

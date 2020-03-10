@@ -3,6 +3,8 @@ package com.lyd.itshequ.controller;
 import com.lyd.itshequ.bean.CommentDTO;
 import com.lyd.itshequ.bean.PostDTO;
 import com.lyd.itshequ.enums.CommentTypeEnum;
+import com.lyd.itshequ.mapper.CommentMapper;
+import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.service.CommentService;
 import com.lyd.itshequ.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,17 @@ public class PostController {
 	private PostService postService;
 	@Autowired
 	private CommentService commentService;
+
 	@GetMapping("/post/{id}")
 	public String post(@PathVariable("id")Long id, Model model){
+		PostDTO postById = postService.getPostById(id);
+		List<PostDTO> relatePosts = postService.selectByRelated(postById);
 		List<CommentDTO> commentDTOList = commentService.listByTargetId(id, CommentTypeEnum.POST);
 		//累加阅读数
 		PostDTO postDTO = postService.incView(id);
 		model.addAttribute("comments",commentDTOList);
 		model.addAttribute("postDTO",postDTO);
+		model.addAttribute("relatedPost",relatePosts);
 		return "Post";
 	}
 }

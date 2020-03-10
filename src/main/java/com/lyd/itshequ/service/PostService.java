@@ -4,6 +4,8 @@ import com.lyd.itshequ.bean.PageDTO;
 import com.lyd.itshequ.bean.PostDTO;
 import com.lyd.itshequ.model.Post;
 
+import java.util.List;
+
 public interface PostService {
 	PageDTO getPostByCreator(Long id,Integer page, Integer pageSize);
 	PageDTO getPostAll(Integer page, Integer pageSize);
@@ -12,4 +14,6 @@ public interface PostService {
 	void createOrUpdate(Post post);
 
     PostDTO incView(Long id);
+
+	List<PostDTO> selectByRelated(PostDTO postById);
 }

@@ -78,32 +78,32 @@
                             <span th:text="${#dates.format(notification.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
                         </div>
                     </div>
+                    <nav  aria-label="Page navigation" style="float: right">
+                        <ul class="pagination">
+                            <li>
+                                <a th:href="@{/profile/(page=1,action='replies')}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${posts.hasAheah}">
+                                <a th:href="@{/profile/(page=${posts.currentPage - 1},action='replies')}" aria-label="Previous">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                            <li th:class="${posts.currentPage == page}?'active':''" th:each="page:${posts.pages}"><a  th:href="@{/profile/(page=${page},action='replies')}"  th:text="${page}"></a></li>
+                            <li th:if="${posts.hasNext}">
+                                <a th:href="@{/profile/(page=${posts.currentPage + 1},action='replies')}" aria-label="Previous">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/profile/(page=${posts.pages.size()},action='replies')}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
 
-                    <!--<nav  aria-label="Page navigation" style="float: right">-->
-                    <!--    <ul class="pagination">-->
-                    <!--        <li>-->
-                    <!--            <a th:href="@{/profile/(page=1,action='replies')}" aria-label="Previous">-->
-                    <!--                <span aria-hidden="true">&laquo;</span>-->
-                    <!--            </a>-->
-                    <!--        </li>-->
-                    <!--        <li th:if="${posts.hasAheah}">-->
-                    <!--            <a th:href="@{/profile/(page=${notification.currentPage - 1},action='myPost')}" aria-label="Previous">-->
-                    <!--                <span aria-hidden="true">&lt;</span>-->
-                    <!--            </a>-->
-                    <!--        </li>-->
-                    <!--        <li th:class="${notification.currentPage == page}?'active':''" th:each="page:${notification.pages}"><a  th:href="@{/profile/(page=${page},action='replies')}"  th:text="${page}"></a></li>-->
-                    <!--        <li th:if="${notification.hasNext}">-->
-                    <!--            <a th:href="@{/profile/(page=${notification.currentPage + 1},action='replies')}" aria-label="Previous">-->
-                    <!--                <span aria-hidden="true">&gt;</span>-->
-                    <!--            </a>-->
-                    <!--        </li>-->
-                    <!--        <li>-->
-                    <!--            <a th:href="@{/profile/(page=${notification.pages.size()},action='replies')}" aria-label="Next">-->
-                    <!--                <span aria-hidden="true">&raquo;</span>-->
-                    <!--            </a>-->
-                    <!--        </li>-->
-                    <!--    </ul>-->
-                    <!--</nav>-->
                 </div>
             </div>
             <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">

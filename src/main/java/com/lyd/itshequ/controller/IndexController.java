@@ -2,10 +2,12 @@ package com.lyd.itshequ.controller;
 
 import com.lyd.itshequ.bean.PageDTO;
 import com.lyd.itshequ.bean.PostDTO;
+import com.lyd.itshequ.enums.NotificationStatusEnum;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
+import com.lyd.itshequ.service.NotificationService;
 import com.lyd.itshequ.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +31,17 @@ public class IndexController {
 
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@GetMapping("/")
 	public String index(HttpServletRequest request, Model model, @RequestParam(name = "page", defaultValue = "1") Integer page, @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
 		// 拿到帖子列表
 		PageDTO pageDTO = postService.getPostAll(page,pageSize);
+		//查询通知数
+		User user = (User) request.getSession().getAttribute("user");
+		Integer notifyNumber = notificationService.queryNotifyNumber(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
+		model.addAttribute("notifyNumber",notifyNumber);
 		model.addAttribute("posts", pageDTO);
 		return "Index";
 	}

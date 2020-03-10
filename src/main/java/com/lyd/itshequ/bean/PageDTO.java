@@ -12,8 +12,8 @@ import java.util.List;
  * @Date 2020/2/23 15:23
  **/
 @Data
-public class PageDTO {
-	private List<PostDTO> data;
+public class PageDTO<T> {
+	private List<T> data;
 	private Boolean hasAheah;
 	private Boolean hasNext;
 	private Integer currentPage;

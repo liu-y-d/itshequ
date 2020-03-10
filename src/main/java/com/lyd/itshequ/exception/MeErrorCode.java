@@ -8,7 +8,9 @@ public enum MeErrorCode implements IMeErrorCode {
     SYS_ERROR(2004,"系统错误请重试！"),
     TYPE_PARAM_WRONG(2005,"评论类型错误，或问题不存在！"),
     COMMENT_NOT_FOUND(2006, "回复的评论不存在！"),
-    NOT_NULL(2007,"输入内容不能为空！");
+    NOT_NULL(2007,"输入内容不能为空！"),
+    NOTIFICATION_NOT_FOUND(2008,"通知不存在！"),
+    READ_ERROR(2009,"请勿修改URL！");
 
     @Override
     public String getMessage() {

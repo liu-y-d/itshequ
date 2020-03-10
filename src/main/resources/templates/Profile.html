@@ -21,7 +21,7 @@
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
                 <h2><span th:text="${sectionName}"></span></h2>
                 <hr>
-                <div th:if="${posts != null}">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" th:if="${section == 'myPost'}">
                     <div  class="media" th:each="post:${posts.data}">
                         <div class="media-left">
                             <a href="#">
@@ -67,12 +67,49 @@
                     <!--end分页条-->
                 </div>
 
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" th:if="${section == 'replies'}">
+                    <div  class="media" th:each="notification:${posts.data}">
+                        <div class="media-body">
+                            <h5 class="media-heading" >
+                                <span th:text="${notification.notifierName+notification.typeName}"></span>
+                                <a th:href="@{'/notification/'+ ${notification.id}}" th:text="${notification.outerTitle}" ></a>
+                                <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
+                            </h5>
+                            <span th:text="${#dates.format(notification.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                        </div>
+                    </div>
+
+                    <!--<nav  aria-label="Page navigation" style="float: right">-->
+                    <!--    <ul class="pagination">-->
+                    <!--        <li>-->
+                    <!--            <a th:href="@{/profile/(page=1,action='replies')}" aria-label="Previous">-->
+                    <!--                <span aria-hidden="true">&laquo;</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        <li th:if="${posts.hasAheah}">-->
+                    <!--            <a th:href="@{/profile/(page=${notification.currentPage - 1},action='myPost')}" aria-label="Previous">-->
+                    <!--                <span aria-hidden="true">&lt;</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        <li th:class="${notification.currentPage == page}?'active':''" th:each="page:${notification.pages}"><a  th:href="@{/profile/(page=${page},action='replies')}"  th:text="${page}"></a></li>-->
+                    <!--        <li th:if="${notification.hasNext}">-->
+                    <!--            <a th:href="@{/profile/(page=${notification.currentPage + 1},action='replies')}" aria-label="Previous">-->
+                    <!--                <span aria-hidden="true">&gt;</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        <li>-->
+                    <!--            <a th:href="@{/profile/(page=${notification.pages.size()},action='replies')}" aria-label="Next">-->
+                    <!--                <span aria-hidden="true">&raquo;</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--    </ul>-->
+                    <!--</nav>-->
+                </div>
             </div>
             <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
                 <div class="list-group profile-rightList">
-                    <a th:href="@{/profile/(action='myPost')}" th:class="${section == 'myPost'}?'list-group-item active':'list-group-item'" th:text="${sectionName}"></a>
-                    <a th:href="@{/profile/(action='replies')}" th:class="${section == 'replies'}?'list-group-item active':'list-group-item'">我的收藏<span class="badge">14</span></a>
-                    <a th:href="@{/profile/(action='replies')}" th:class="${section == 'replies'}?'list-group-item active':'list-group-item'">最新回复<span class="badge">14</span></a>
+                    <a th:href="@{/profile/(action='myPost')}" th:class="${section == 'myPost'}?'list-group-item active':'list-group-item'" >我的帖子</a>
+                    <a th:href="@{/profile/(action='replies')}" th:class="${section == 'replies'}?'list-group-item active':'list-group-item'">最新回复<span class="badge" th:text="${notifyNumber}"></span></a>
                 </div>
             </div>
         </div>

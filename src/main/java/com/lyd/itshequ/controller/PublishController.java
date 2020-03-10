@@ -2,9 +2,11 @@ package com.lyd.itshequ.controller;
 
 import com.lyd.itshequ.bean.PostDTO;
 import com.lyd.itshequ.cache.TagCache;
+import com.lyd.itshequ.enums.NotificationStatusEnum;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
+import com.lyd.itshequ.service.NotificationService;
 import com.lyd.itshequ.service.PostService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ public class PublishController {
 
 	@Autowired
 	private PostService postService;
-
+	@Autowired
+	private NotificationService notificationService;
 	@GetMapping("/publish")
 	public String publish(HttpServletRequest request,Model model) {
 		User user = (User) request.getSession().getAttribute("user");
@@ -68,10 +71,13 @@ public class PublishController {
 	}
 
 	@GetMapping("/publish/{id}")
-	public String edit(@PathVariable("id")Long id,Model model){
+	public String edit(@PathVariable("id")Long id,Model model,HttpServletRequest request){
+		User user = (User) request.getSession().getAttribute("user");
 		PostDTO postById = postService.getPostById(id);
 		model.addAttribute("post",postById);
 		model.addAttribute("tags", TagCache.get());
+		Integer notifyNumber = notificationService.queryNotifyNumber(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
+		model.addAttribute("notifyNumber",notifyNumber);
 		return "publish";
 	}
 }

@@ -2,12 +2,16 @@ package com.lyd.itshequ.service;
 
 import com.lyd.itshequ.bean.CommentDTO;
 import com.lyd.itshequ.enums.CommentTypeEnum;
+import com.lyd.itshequ.enums.NotificationEnum;
+import com.lyd.itshequ.enums.NotificationStatusEnum;
 import com.lyd.itshequ.exception.MeErrorCode;
 import com.lyd.itshequ.exception.MeExceptions;
 import com.lyd.itshequ.mapper.CommentMapper;
+import com.lyd.itshequ.mapper.NotificationMapper;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.Comment;
+import com.lyd.itshequ.model.Notification;
 import com.lyd.itshequ.model.Post;
 import com.lyd.itshequ.model.User;
 import org.springframework.beans.BeanUtils;
@@ -30,11 +34,13 @@ public class CommentServiceImpl implements CommentService{
     private PostMapper postMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     @Override
     @Transactional
     //抛出异常数据回滚
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User user) {
         if (comment.getParentId() == null || comment.getParentId()==0){
             throw new MeExceptions(MeErrorCode.TARGET_PARAM_NOT_FOUNT);
         }
@@ -47,19 +53,50 @@ public class CommentServiceImpl implements CommentService{
             if (dbComment==null){
                 throw new MeExceptions(MeErrorCode.COMMENT_NOT_FOUND);
             }
+            Post postById = postMapper.getPostById(dbComment.getParentId());
+            if (postById == null){
+                throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
+            }
             commentMapper.insert(comment);
             comment.setCommentCount(dbComment.getCommentCount()+1);
             commentMapper.incCommentCount(comment);
+            //创建通知
+            createNotify(comment, dbComment.getCommentator(), NotificationEnum.REPLY_COMMENT, user.getName(), postById.getTitle(), postById.getId());
         }else{
             //回复问题
             Post postById = postMapper.getPostById(comment.getParentId());
             if (postById == null){
                 throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);
             }
+            comment.setCommentCount(0);
             commentMapper.insert(comment);
             postById.setCommentCount(postById.getCommentCount()+1);
             postMapper.updatePost(postById);
+            //创建通知
+            createNotify(comment, postById.getCreator(), NotificationEnum.REPLY_POST,user.getName(),postById.getTitle(), postById.getId());
         }
+    }
+
+    /**
+     * 创建通知
+     * @param comment
+     * @param receiver
+     * @param notificationEnum
+     * @param name
+     * @param postTitle
+     * @param outerId
+     */
+    private void createNotify(Comment comment, Long receiver, NotificationEnum notificationEnum, String name, String postTitle, Long outerId) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(notificationEnum.getType());
+        notification.setOuterId(outerId);
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notification.setNotifierName(name);
+        notification.setOuterTitle(postTitle);
+        notificationMapper.insert(notification);
     }
 
     @Override

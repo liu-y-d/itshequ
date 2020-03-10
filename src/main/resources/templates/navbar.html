@@ -21,6 +21,8 @@
                         <button type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a th:href="@{/profile/(action='replies')}">通知 <span class="badge" th:text="${notifyNumber}"></span></a></li>
                         <li class="dropdown" th:if="${session.user != null}">
                             <a href="/publish"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;发帖</a>
                         </li>

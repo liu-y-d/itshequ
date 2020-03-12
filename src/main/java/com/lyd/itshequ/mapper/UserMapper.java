@@ -9,12 +9,16 @@ import java.util.List;
 public interface UserMapper {
 	@Insert("insert into USER (name,account_id,token,gmt_create,gmt_modified,avatar_url) values(#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})")
 	public void insert(User user);
+	@Insert("insert into USER (name,gmt_create,gmt_modified,avatar_url,password,token) values(#{name},#{gmtCreate},#{gmtModified},#{avatarUrl},#{password},#{token})")
+	public void insertLocalUser(User user);
 	@Select("select * from user where token = #{token}")
 	User findByToken(@Param("token") String token);
-
+	@Select("select * from user where name = #{name}")
+	User queryByName(@Param("name")String name);
 	@Select("select * from user where id = #{id}")
 	User findById(@Param("id")Long id);
-
+	@Select("select * from user where name = #{name} and password = #{password}")
+	User Login(User user);
 	@Select("select * from user where account_id = #{accountId}")
 	User findByAccountId(@Param("accountId") String accountId);
 

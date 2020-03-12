@@ -42,29 +42,65 @@
 
                     </div>
                     <div class="form-bottom">
-                        <form role="form" action="user/Login" method="post" class="login-form">
+                        <form role="form" action="/Login" method="post" class="login-form">
                             <div class="form-group">
                                 <label class="sr-only" for="form-username">账户名</label>
-                                <input type="text" name="userName" placeholder="Username..."
+                                <input type="text" name="name" placeholder="Username..."
                                        class="form-username form-control" id="form-username">
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="form-password">密码</label>
-                                <input type="password" name="userPwd" placeholder="Password..."
+                                <input type="password" name="password" placeholder="Password..."
                                        class="form-password form-control" id="form-password">
                             </div>
+                            <span th:if="${errorMessage!=null}" th:text="${errorMessage}" style="color: red"></span>
                             <button type="submit" class="btn">登录</button>
                         </form>
-                        <form role="form" action="/user/toRegistUserInfo" method="post" class="login-form">
-                            <button type="submit" class="btn" style="background-color: #2aabd2">注册</button>
-                        </form>
-                        <a href="https://github.com/login/oauth/authorize?client_id=082ef1a6bff5e94b746a&redirect_uri=http://localhost:8888/callback&scope=user&state=1">GitHub登录</a>
+                        <a type="button" class="btn" href="/toRegistUser" data-toggle="modal" data-target="#myModal">注册</a>
+                        <a href="https://github.com/login/oauth/authorize?client_id=082ef1a6bff5e94b746a&redirect_uri=http://localhost:8888/callback&scope=user&state=1" type="button" class="btn">GitHub登录</a>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    注册用户信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" action="/registUser" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">用户名称</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="请输入名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">用户密码</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="请输入名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="file">上传头像</label>
+                        <input type="file" id="file" name="file">
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 <div th:replace="footer :: footer"></div>
 </body>

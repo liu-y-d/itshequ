@@ -35,4 +35,7 @@ public interface UserMapper {
 			"</script>"
 	})
     List<User> selectByIdList(@Param("userIds") List<Long> userIds);
+
+	@Update("update user set name = #{name},gmt_modified = #{gmtModified}, avatar_url = #{avatarUrl},password=#{password} where id = #{id}")
+	int updateUser(User user);
 }

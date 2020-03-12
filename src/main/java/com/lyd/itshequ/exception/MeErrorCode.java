@@ -12,7 +12,8 @@ public enum MeErrorCode implements IMeErrorCode {
     NOTIFICATION_NOT_FOUND(2008,"通知不存在！"),
     READ_ERROR(2009,"请勿修改URL！"),
     UPLOAD_ERROR(2010,"图片上传失败"),
-    USERNAME_REPEAT(2011,"用户名已存在！");
+    USERNAME_REPEAT(2011,"用户名已存在！"),
+    EDITUSER_ERROR(2012,"更新用户信息失败！");
 
     @Override
     public String getMessage() {

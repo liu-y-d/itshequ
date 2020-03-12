@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>post-BaJi</title>
+    <!--start 引入bootstrap-->
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <script src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/Me.css">
+    <link rel="stylesheet" href="/editormd/css/editormd.min.css">
+    <script src="/editormd/editormd.js"></script>
+    <!--end-->
+</head>
+<body class="me">
+<!--start 导航条-->
+<div th:replace="navbar :: navbar"></div>
+<!--end导航条-->
+<div class="container-fluid" >
+    <div class="container-fluid" style="margin: 30px 50px 30px 50px;background-color: white">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;个人信息</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        <div class="thumbnail">
+                            <img th:src="${user.avatarUrl}" onerror=src="css/images/3.png" >
+                            <div class="caption" style="text-align: center">
+                                <h3 th:text="'用户名：'+${user.name}"></h3>
+                                <p th:text="'密码:'+${user.password}"></p>
+                                <p><button type="button" class="btn" data-toggle="modal" data-target="#myModal">编辑</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h3>发帖规则</h3>
+                1、用户的言行不得违反《计算机信息网络国际联网安全保护管理办法》、《互联网信息服务管理办法》、《互联网电子公告服务管理规定》、《维护互联网安全的决定》、《互联网新闻信息服务管理规定》等相关法律规定。
+                2、在不同贴吧发帖，还需要遵循当前贴吧吧主对该吧的相关规定。
+                3、不能在贴吧中发表含有猥亵、色情、人身攻击和反政府言论等非法或侵权言论的信息；
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改用户信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" action="/editUser" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <div class="form-group">
+                        <label for="name">用户名称</label>
+                        <input type="text" class="form-control" id="name" name="name" th:value="${user.name}" placeholder="请输入名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">用户密码</label>
+                        <input type="password" class="form-control" id="password" name="password" th:value="${user.password}" placeholder="请输入名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="file">上传头像</label>
+                        <input type="file" id="file" name="file">
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

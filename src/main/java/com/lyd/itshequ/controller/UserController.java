@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
@@ -28,7 +25,6 @@ public class UserController {
 
     @RequestMapping("/registUser")
     public String toRegistUser(@RequestParam("name") String name, @RequestParam("password") String password, MultipartFile file) {
-        System.out.println(name + password + file.getOriginalFilename());
         User user = new User();
         if (file!=null){
             try {
@@ -65,4 +61,37 @@ public class UserController {
         response.addCookie(new Cookie("token",login.getToken()));
         return "redirect:/";
     }
-}
+
+    @GetMapping("/toMeInfo")
+    public String toMeInfo(Long id,Model model){
+        User user = userMapper.findById(id);
+        if (user==null){
+            throw new MeExceptions(MeErrorCode.READ_ERROR);
+        }
+        model.addAttribute("user",user);
+        return "MeInfo";
+    }
+
+    @RequestMapping("/editUser")
+    public String editUser(Model model,@RequestParam("id")Long id,@RequestParam("name") String name, @RequestParam("password") String password, MultipartFile file) {
+        User user = new User();
+        if (file!=null){
+            try {
+                String s = QiNiuUpload.updateFile(file, file.getOriginalFilename());
+                user.setAvatarUrl(s);
+            } catch (Exception e) {
+                throw new MeExceptions(MeErrorCode.UPLOAD_ERROR);
+            }
+        }
+        user.setId(id);
+        user.setName(name);
+        user.setPassword(password);
+        user.setGmtModified(System.currentTimeMillis());
+        int i = userMapper.updateUser(user);
+        if (i!=1){
+            throw new MeExceptions(MeErrorCode.EDITUSER_ERROR);
+        }
+        model.addAttribute("user",user);
+        return "MeInfo";
+    }
+    }

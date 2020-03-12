@@ -59,8 +59,13 @@ public class PostServiceImpl implements PostService {
 
 
 	@Override
-	public PageDTO getPostAll(Integer page, Integer pageSize) {
-		Integer pageSum= postMapper.pageSum();
+	public PageDTO getPostAll(String search, Integer page, Integer pageSize) {
+		Integer pageSum;
+		if (StringUtils.isNotBlank(search)){
+			pageSum=postMapper.pageSumBySearch(search);
+		}else {
+			pageSum = postMapper.pageSum();
+		}
 		if (page<1){
 			page = 1;
 		}
@@ -69,9 +74,16 @@ public class PostServiceImpl implements PostService {
 			page = pageSum/pageSize+1;
 		}
 		Integer offSize = pageSize * (page-1);
-		List<Post> postAll = postMapper.getPostAll(offSize,pageSize);
-		List<PostDTO> postDTOS = new ArrayList<>();
+		List<Post> postAll;
 		PageDTO pageDTO = new PageDTO();
+		if (StringUtils.isNotBlank(search)){
+			postAll=postMapper.getPostBySearch(search,offSize,pageSize);
+			pageDTO.setIsPage(false);
+			pageDTO.setSearch(search);
+		}else{
+			postAll= postMapper.getPostAll(offSize,pageSize);
+		}
+		List<PostDTO> postDTOS = new ArrayList<>();
 		for (Post post : postAll){
 			User user = userMapper.findById(post.getCreator());
 			PostDTO postDTO = new PostDTO();
@@ -80,7 +92,6 @@ public class PostServiceImpl implements PostService {
 			postDTOS.add(postDTO);
 		}
 		pageDTO.setData(postDTOS);
-
 		pageDTO.setPageInfo(pageSum,page,pageSize);
 		return pageDTO;
 	}
@@ -103,6 +114,8 @@ public class PostServiceImpl implements PostService {
 		Post postById = postMapper.getPostById(post.getId());
 		if (postById!=null){
 			post.setGmtCreate(System.currentTimeMillis());
+			post.setWatchCount(postById.getWatchCount());
+			post.setCommentCount(postById.getCommentCount());
 			int i = postMapper.updatePost(post);
 			if (i != 1){
 				throw new MeExceptions(MeErrorCode.POST_NOT_FOUND);

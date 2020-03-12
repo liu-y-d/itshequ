@@ -33,7 +33,7 @@
                 <div class="media"  th:each="post:${posts.data}">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-me img-rounded" th:src="${post.user.avatarUrl}"  onerror=src="css/images/3.jpg" width="38">
+                            <img class="media-object img-me img-rounded" th:src="${post.user.avatarUrl}"  onerror=src="css/images/3.png" width="38">
                         </a>
                     </div>
                     <div class="media-body">
@@ -47,26 +47,51 @@
                     </div>
                 </div>
                 <!--start分页条-->
-                <nav aria-label="Page navigation" style="float: right">
+                <nav aria-label="Page navigation" style="float: right" th:if="${posts.isPage != false}">
+                <ul class="pagination">
+                    <li>
+                        <a th:href="@{/(page=1)}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${posts.hasAheah}">
+                        <a th:href="@{/(page=${posts.currentPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:class="${posts.currentPage == page}?'active':''" th:each="page:${posts.pages}"><a  th:href="@{/(page=${page})}"  th:text="${page}"></a></li>
+                    <li th:if="${posts.hasNext}">
+                        <a th:href="@{/(page=${posts.currentPage + 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/(page=${posts.pages.size()})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+                <nav aria-label="Page navigation" style="float: right" th:if="${posts.isPage == false}">
                     <ul class="pagination">
                         <li>
-                            <a th:href="@{/(page=1)}" aria-label="Previous">
+                            <a th:href="@{/(search=${posts.search},page=1)}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li th:if="${posts.hasAheah}">
-                            <a th:href="@{/(page=${posts.currentPage - 1})}" aria-label="Previous">
+                            <a th:href="@{/(search=${posts.search},page=${posts.currentPage - 1})}" aria-label="Previous">
                                 <span aria-hidden="true">&lt;</span>
                             </a>
                         </li>
-                        <li th:class="${posts.currentPage == page}?'active':''" th:each="page:${posts.pages}"><a  th:href="@{/(page=${page})}"  th:text="${page}"></a></li>
+                        <li th:class="${posts.currentPage == page}?'active':''" th:each="page:${posts.pages}"><a  th:href="@{/(search=${posts.search},page=${page})}"  th:text="${page}"></a></li>
                         <li th:if="${posts.hasNext}">
-                            <a th:href="@{/(page=${posts.currentPage + 1})}" aria-label="Previous">
+                            <a th:href="@{/(search=${posts.search},page=${posts.currentPage + 1})}" aria-label="Previous">
                                 <span aria-hidden="true">&gt;</span>
                             </a>
                         </li>
                         <li>
-                            <a th:href="@{/(page=${posts.pages.size()})}" aria-label="Next">
+                            <a th:href="@{/(search=${posts.search},page=${posts.pages.size()})}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -85,6 +110,7 @@
 
     </div>
 </div>
+<div th:replace="footer :: footer"></div>
 
 </body>
 </html>

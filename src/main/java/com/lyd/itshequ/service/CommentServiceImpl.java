@@ -87,6 +87,9 @@ public class CommentServiceImpl implements CommentService{
      * @param outerId
      */
     private void createNotify(Comment comment, Long receiver, NotificationEnum notificationEnum, String name, String postTitle, Long outerId) {
+        if(receiver == comment.getCommentator()){
+            return;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationEnum.getType());

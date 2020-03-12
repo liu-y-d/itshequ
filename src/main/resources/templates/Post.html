@@ -6,9 +6,13 @@
     <title th:text="${postDTO.title}"></title>
     <!--start 引入bootstrap-->
     <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/editormd/css/editormd.preview.css" />
     <script src="/bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
     <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="/js/moment.min.js"></script>
+    <script src="/editormd/editormd.js"></script>
+    <script src="/editormd/lib/marked.min.js"></script>
+    <script src="/editormd/lib/prettify.min.js"></script>
     <link rel="stylesheet" href="/css/Me.css">
     <!--end-->
 </head>
@@ -30,7 +34,9 @@
                     阅读数：<span th:text="${postDTO.watchCount}"></span>
                 </span>
                     <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${postDTO.description}"></div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="post-view" >
+                        <textarea style="display:none;" th:text="${postDTO.description}"></textarea>
+                    </div>
                     <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px">
                         <span class="label label-info" th:each="tag:${postDTO.tag.split(',')}" style="margin-right: 5px">
@@ -57,13 +63,13 @@
                     <div class="media" style="margin-top: 40px">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-me img-rounded" th:src="${postDTO.user.avatarUrl}"
-                                     onerror=src="/css/images/3.jpg" width="38">
+                                <img class="media-object img-me img-rounded" th:src="${session.user.avatarUrl}"
+                                     onerror=src="/css/images/3.png" width="38">
                             </a>
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">
-                                <span th:text="${postDTO.user.name}"></span>
+                                <span th:text="${session.user.name}"></span>
                             </h5>
                         </div>
                     </div>
@@ -83,7 +89,7 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-me img-rounded" th:src="${comment.user.avatarUrl}"
-                                     onerror=src="/css/images/3.jpg" width="38">
+                                     onerror=src="/css/images/3.png" width="38">
                             </a>
                         </div>
                         <div class="media-body" th:id="${'comment-body-'+comment.id}">
@@ -123,7 +129,7 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-me img-rounded" th:src="${postDTO.user.avatarUrl}"
-                                     onerror=src="/css/images/3.jpg" width="38">
+                                     onerror=src="/css/images/3.png" width="38">
                             </a>
                         </div>
                         <div class="media-body">
@@ -145,8 +151,11 @@
 
     </div>
 </div>
+<div th:replace="footer :: footer"></div>
 <script>
-
+    $(function() {
+        editormd.markdownToHTML("post-view", {});
+    });
     function postComment() {
         // 提交回复
         var postId = $("#post_id").val();
@@ -218,7 +227,7 @@
                         }).append($("<img/>", {
                             "class": "media-object img-me img-rounded",
                             "src": comment.user.avatarUrl
-                            // "onerror":"src=\"/css/images/3.jpg\""
+                            // "onerror":"src=\"/css/images/3.png\""
                         }));
                         var mediaBodyEl = $("<div/>", {
                             "class": "media-body"

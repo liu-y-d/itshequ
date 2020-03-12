@@ -25,7 +25,7 @@
                     <div  class="media" th:each="post:${posts.data}">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-me img-rounded" th:src="${post.user.avatarUrl}"  onerror=src="/css/images/3.jpg" width="38">
+                                <img class="media-object img-me img-rounded" th:src="${post.user.avatarUrl}"  onerror=src="/css/images/3.png" width="38">
                             </a>
                         </div>
                         <div class="media-body">
@@ -116,7 +116,7 @@
 
     </div>
 </div>
-
+<div th:replace="footer :: footer"></div>
 
 
 </body>

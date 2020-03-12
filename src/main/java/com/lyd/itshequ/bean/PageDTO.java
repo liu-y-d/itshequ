@@ -19,6 +19,8 @@ public class PageDTO<T> {
 	private Integer currentPage;
 	private List<Integer> pages = new ArrayList<>();
 	private Integer pageSum;
+	private Boolean isPage;
+	private String search;
 	public void setPageInfo(Integer pageSum, Integer page, Integer pageSize) {
 		currentPage = page;
 		Integer totalPage = 0;

@@ -16,6 +16,7 @@
 .edit-a{
     color: #999999;
     font-size: 13px;
+    text-decoration: none;
 }
 .media-body{
     padding-top: 10px
@@ -30,6 +31,10 @@
 .dianzan{
     margin-right: 15px;
 }
+.changeColor{
+    color: blue;
+}
+
 .menu{
     color: #999;
     margin-top: 5px;

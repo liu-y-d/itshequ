@@ -49,9 +49,9 @@
                            class="edit-a full-right"
                            th:href="@{'/publish/'+ ${postDTO.id}}"><span class="glyphicon glyphicon-pencil"
                                                                          aria-hidden="true"></span>&nbsp;&nbsp;编辑</a>
-                        <a th:if="${session.user !=null && session.user.id == postDTO.creator}" class="edit-a full-righ"
-                           th:href="@{'/publish/'+ ${postDTO.id}}"><span class="glyphicon glyphicon-thumbs-up"
-                                                                         aria-hidden="true"></span>&nbsp;&nbsp;点赞</a>
+                        <a th:if="${session.user !=null && session.user.id == postDTO.creator}" class="edit-a full-righ" href="#"
+                           onclick="likeFunction(); return false;" ><span th:class="${color == '1'?'glyphicon glyphicon-thumbs-up changeColor':'glyphicon glyphicon-thumbs-up'}"
+                                                                         aria-hidden="true" id="dianzan"></span>&nbsp;&nbsp;点赞</a>
                         <a th:if="${session.user !=null && session.user.id == postDTO.creator}" class="edit-a full-righ"
                            th:href="@{'/publish/'+ ${postDTO.id}}"><span class="glyphicon glyphicon-star-empty"
                                                                          aria-hidden="true"></span>&nbsp;&nbsp;收藏</a>
@@ -59,7 +59,7 @@
 
                 </div>
                 <!--回复框-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_session">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_session" th:if="${session.user!=null}">
                     <div class="media" style="margin-top: 40px">
                         <div class="media-left">
                             <a href="#">
@@ -260,6 +260,24 @@
                 e.classList.add("active");
             }
         }
+    }
+    function likeFunction() {
+        var postId = $("#post_id").val();
+        $.ajax({
+            type: "GET",
+            url: "/like/"+postId,
+            success: function (data) {
+                var likeInfo = JSON.parse(data);
+                console.log(likeInfo.likeStatus);
+                if (likeInfo.likeStatus == 0){
+                    $("#dianzan").css("color","#999999");
+                    alert("成功取消点赞");
+                }else {
+                    $("#dianzan").css("color","blue");
+                    alert("点赞成功");
+                }
+            }
+        });
     }
 </script>
 

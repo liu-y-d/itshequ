@@ -1,6 +1,7 @@
 package com.lyd.itshequ.controller;
 
 import com.lyd.itshequ.bean.CommentDTO;
+import com.lyd.itshequ.bean.LikeDTO;
 import com.lyd.itshequ.bean.PostDTO;
 import com.lyd.itshequ.enums.CommentTypeEnum;
 import com.lyd.itshequ.enums.NotificationStatusEnum;
@@ -8,6 +9,7 @@ import com.lyd.itshequ.mapper.CommentMapper;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.model.User;
 import com.lyd.itshequ.service.CommentService;
+import com.lyd.itshequ.service.LikeService;
 import com.lyd.itshequ.service.NotificationService;
 import com.lyd.itshequ.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class PostController {
 	private CommentService commentService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private LikeService likeService;
 	@GetMapping("/post/{id}")
 	public String post(@PathVariable("id")Long id, Model model, HttpServletRequest request){
 		User user = (User) request.getSession().getAttribute("user");
@@ -45,8 +49,21 @@ public class PostController {
 		model.addAttribute("comments",commentDTOList);
 		model.addAttribute("postDTO",postDTO);
 		model.addAttribute("relatedPost",relatePosts);
-		Integer notifyNumber = notificationService.queryNotifyNumber(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
-		model.addAttribute("notifyNumber",notifyNumber);
+		if (user!=null){
+			Integer notifyNumber = notificationService.queryNotifyNumber(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
+			model.addAttribute("notifyNumber",notifyNumber);
+			LikeDTO likeDTO = new LikeDTO();
+			likeDTO.setPostId(id);
+			likeDTO.setUserId(user.getId());
+			LikeDTO dto = likeService.getLikeDTO(likeDTO);
+			if (dto!=null&&dto.getLikeStatus()==1){
+				model.addAttribute("color","1");
+			}else {
+				model.addAttribute("color","0");
+
+			}
+		}
+
 		return "Post";
 	}
 }

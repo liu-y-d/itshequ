@@ -57,13 +57,21 @@ public class UserController {
             model.addAttribute("errorMessage","用户名或密码错误！");
             return "Login";
         }
+        if (login.getStatus() == 0){
+            model.addAttribute("errorMessage","帐号已被封停，请联系管理员！");
+            return "Login";
+        }
         request.getSession().setAttribute("user",login);
         response.addCookie(new Cookie("token",login.getToken()));
         return "redirect:/";
     }
 
     @GetMapping("/toMeInfo")
-    public String toMeInfo(Long id,Model model){
+    public String toMeInfo(Long id,Model model,HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");
+        if (user1 == null){
+            throw new MeExceptions(MeErrorCode.NO_LOGIN);
+        }
         User user = userMapper.findById(id);
         if (user==null){
             throw new MeExceptions(MeErrorCode.READ_ERROR);

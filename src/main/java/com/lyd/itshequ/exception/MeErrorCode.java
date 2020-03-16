@@ -13,7 +13,9 @@ public enum MeErrorCode implements IMeErrorCode {
     READ_ERROR(2009,"请勿修改URL！"),
     UPLOAD_ERROR(2010,"图片上传失败"),
     USERNAME_REPEAT(2011,"用户名已存在！"),
-    EDITUSER_ERROR(2012,"更新用户信息失败！");
+    EDITUSER_ERROR(2012,"更新用户信息失败！"),
+    ADMIN_LOGIN(2013,"管理员用户名或密码错误！"),
+    USER_BLOCK(2014,"帐号已被封停请联系管理员！");
 
     @Override
     public String getMessage() {

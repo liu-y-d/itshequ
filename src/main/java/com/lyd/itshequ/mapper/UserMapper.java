@@ -38,4 +38,8 @@ public interface UserMapper {
 
 	@Update("update user set name = #{name},gmt_modified = #{gmtModified}, avatar_url = #{avatarUrl},password=#{password} where id = #{id}")
 	int updateUser(User user);
+	@Update("update user set status=#{status} where id = #{userId}")
+	int blockUser(Long userId,Integer status);
+	@Select("select * from user where name LIKE CONCAT('%',#{name},'%')")
+	List<User> adminSearch(String name);
 }

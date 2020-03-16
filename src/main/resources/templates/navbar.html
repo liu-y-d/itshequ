@@ -34,7 +34,8 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >[[${session.user.name}]]<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li th:if="${session.user.accountId==null}"><a th:href="@{/toMeInfo/(id=${session.user.id})}">个人信息</a></li>
-                                <li th:if="${session.user!=null}"><a th:href="@{/collect}">我的帖子</a></li>
+                                <li><a th:href="@{/profile/(action='myPost')}">我的帖子</a></li>
+                                <li th:if="${session.user!=null}"><a th:href="@{/collect}">我的收藏</a></li>
                                 <li><a href="/logout">退出登录</a></li>
 
                             </ul>

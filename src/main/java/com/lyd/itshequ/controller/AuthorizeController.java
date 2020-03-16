@@ -3,6 +3,8 @@ package com.lyd.itshequ.controller;
 import com.lyd.itshequ.bean.AccessTokenDTO;
 import com.lyd.itshequ.bean.GithubUser;
 import com.lyd.itshequ.commponent.GithubProvider;
+import com.lyd.itshequ.exception.MeErrorCode;
+import com.lyd.itshequ.exception.MeExceptions;
 import com.lyd.itshequ.mapper.UserMapper;
 import com.lyd.itshequ.model.User;
 import com.lyd.itshequ.service.UserService;
@@ -64,6 +66,10 @@ public class AuthorizeController {
 			user.setAccountId(String.valueOf(githubUser.getId()));
 			user.setAvatarUrl(githubUser.getAvatarUrl());
 			userService.createOrUpdate(user);
+			User byAccountId = userMapper.findByAccountId(user.getAccountId());
+			if (byAccountId.getStatus() == 0){
+				throw new MeExceptions(MeErrorCode.USER_BLOCK);
+			}
 			//登录成功 写入cookie和session
 			response.addCookie(new Cookie("token",token));
 			// request.getSession().setAttribute("user",githubUser);

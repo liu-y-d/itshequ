@@ -27,7 +27,7 @@ public interface PostMapper {
 	Integer pageSumById(@Param("id")Long id);
 	@Select("select * from post where id = #{id}")
 	Post getPostById(@Param("id") Long id);
-	@Update("update post set title = #{title},description = #{description},tag = #{tag},gmt_create=#{gmtCreate},watch_count = #{watchCount},comment_count = #{commentCount} where id =#{id}")
+	@Update("update post set title = #{title},description = #{description},tag = #{tag},gmt_create=#{gmtCreate},watch_count = #{watchCount},comment_count = #{commentCount},like_count=#{likeCount} where id =#{id}")
 	int updatePost(Post post);
 
 	@Select("select * from post where id!=#{id} and tag REGEXP #{tag} order by gmt_create desc")

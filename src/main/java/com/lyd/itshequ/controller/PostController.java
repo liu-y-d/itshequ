@@ -1,5 +1,6 @@
 package com.lyd.itshequ.controller;
 
+import com.lyd.itshequ.bean.CollectDTO;
 import com.lyd.itshequ.bean.CommentDTO;
 import com.lyd.itshequ.bean.LikeDTO;
 import com.lyd.itshequ.bean.PostDTO;
@@ -8,10 +9,7 @@ import com.lyd.itshequ.enums.NotificationStatusEnum;
 import com.lyd.itshequ.mapper.CommentMapper;
 import com.lyd.itshequ.mapper.PostMapper;
 import com.lyd.itshequ.model.User;
-import com.lyd.itshequ.service.CommentService;
-import com.lyd.itshequ.service.LikeService;
-import com.lyd.itshequ.service.NotificationService;
-import com.lyd.itshequ.service.PostService;
+import com.lyd.itshequ.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +35,8 @@ public class PostController {
 	private NotificationService notificationService;
 	@Autowired
 	private LikeService likeService;
+	@Autowired
+	private CollectService collectService;
 	@GetMapping("/post/{id}")
 	public String post(@PathVariable("id")Long id, Model model, HttpServletRequest request){
 		User user = (User) request.getSession().getAttribute("user");
@@ -60,7 +60,15 @@ public class PostController {
 				model.addAttribute("color","1");
 			}else {
 				model.addAttribute("color","0");
-
+			}
+			CollectDTO collectDTO = new CollectDTO();
+			collectDTO.setPostId(id);
+			collectDTO.setUserId(user.getId());
+			CollectDTO collect = collectService.getCollectDTO(collectDTO);
+			if (collect!=null){
+				model.addAttribute("collectColor","1");
+			}else {
+				model.addAttribute("collectColor","0");
 			}
 		}
 

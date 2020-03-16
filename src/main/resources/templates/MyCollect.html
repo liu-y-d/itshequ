@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>BaJi</title>
+    <!--start 引入bootstrap-->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+    <script src="bootstrap-3.3.7-dist/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/Me.css">
+</head>
+<body class="me">
+<!--start 导航条-->
+<div th:replace="navbar :: navbar"></div>
+<!--end导航条-->
+<div class="container-fluid" >
+    <div class="container-fluid" style="margin: 30px 50px 30px 50px;background-color: white">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;我的收藏</h2>
+                <hr>
+                <div class="media"  th:each="post:${collects}">
+                    <div class="media-body">
+                        <h4 class="media-heading" >
+                            <a th:href="@{'/post/'+ ${post.post.id}}" th:text="${post.post.title}" ></a>
+                        </h4>
+                        [[${post.post.description}]]<br/>
+                        <span class="text-desc">
+                            <span th:text="${post.post.commentCount}"></span>个回复 · <span th:text="${post.post.watchCount}"></span> 次浏览 · <span th:text="${#dates.format(post.post.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h2><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;网站规则</h2>
+                <hr>
+                1、用户的言行不得违反《计算机信息网络国际联网安全保护管理办法》、《互联网信息服务管理办法》、《互联网电子公告服务管理规定》、《维护互联网安全的决定》、《互联网新闻信息服务管理规定》等相关法律规定。
+                2、在不同贴吧发帖，还需要遵循当前贴吧吧主对该吧的相关规定。
+                3、不能在贴吧中发表含有猥亵、色情、人身攻击和反政府言论等非法或侵权言论的信息；
+            </div>
+        </div>
+
+    </div>
+</div>
+<div th:replace="footer :: footer"></div>
+
+</body>
+</html>

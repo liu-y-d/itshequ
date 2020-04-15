@@ -15,39 +15,39 @@
 </head>
 <body class="me">
 <!--start 导航条-->
-<nav class="navbar navbar-default" style="background-color: #66afe9">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">BaJi后台管理系统</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" action="/">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="请输入关键字" name="search">
-                </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
+<!--<nav class="navbar navbar-default" style="background-color: #66afe9">-->
+<!--    <div class="container-fluid">-->
+<!--        &lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;-->
+<!--        <div class="navbar-header">-->
+<!--            <a class="navbar-brand" href="/">BaJi后台管理系统</a>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;-->
+<!--        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+<!--            <form class="navbar-form navbar-left" action="/">-->
+<!--                <div class="form-group">-->
+<!--                    <input type="text" class="form-control" placeholder="请输入关键字" name="search">-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-default">搜索</button>-->
+<!--            </form>-->
+<!--            <ul class="nav navbar-nav navbar-right">-->
 
-                <li class="dropdown" th:if="${session.admin != null}">
-                    <img src="/css/images/3.png" class="img-circle" height="30px" style="margin-top: 10px">
-                </li>
-                <li th:if="${session.admin == null}"><a href="/toLogin">登录</a></li>
-                <li class="dropdown" th:if="${session.admin != null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >[[${session.admin.adminName}]]<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/adminLoginout">退出登录</a></li>
+<!--                <li class="dropdown" th:if="${session.user != null}">-->
+<!--                    <img src="/css/images/3.png" class="img-circle" height="30px" style="margin-top: 10px">-->
+<!--                </li>-->
+<!--                <li th:if="${session.user == null}"><a href="/toLogin">登录</a></li>-->
+<!--                <li class="dropdown" th:if="${session.user != null}">-->
+<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >[[${session.user.name}]]<span class="caret"></span></a>-->
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a href="/adminLoginout">退出登录</a></li>-->
 
-                    </ul>
-                </li>
+<!--                    </ul>-->
+<!--                </li>-->
 
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-
+<!--            </ul>-->
+<!--        </div>&lt;!&ndash; /.navbar-collapse &ndash;&gt;-->
+<!--    </div>&lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--</nav>-->
+<div th:replace="navbar :: navbar"></div>
 <!--end导航条-->
 <div class="container-fluid" >
     <div class="container-fluid" style="margin: 30px 50px 30px 50px;background-color: white">
@@ -58,7 +58,7 @@
                 <div class="row">
                     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         <div class="thumbnail">
-                            <img th:src="${user.avatarUrl}" onerror=src="css/images/3.png" >
+                            <img th:src="${user.avatarUrl}" onerror=src="/css/images/3.png" >
                             <div class="caption" style="text-align: center">
                                 <h3 th:text="'用户名：'+${user.name}"></h3>
                                 <p th:if="${user.password != null}" th:text="'密码:'+${user.password}"></p>

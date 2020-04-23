@@ -32,6 +32,7 @@ public class CollectServiceImpl implements CollectService {
             collectDTO1.setUserId(collectDTO.getUserId());
             collectDTO1.setPostId(collectDTO.getPostId());
             collectDTO1.setPost(postById);
+            collectDTO1.setTop(collectDTO.getTop());
             dtos.add(collectDTO1);
         }
         return dtos;
@@ -51,6 +52,26 @@ public class CollectServiceImpl implements CollectService {
             int i = collectMapper.delCollect(collectDTO);
             return null;
         }
+    }
+
+    @Override
+    public CollectDTO top(CollectDTO collectDTO) {
+        CollectDTO dto = getCollectDTO(collectDTO);
+        if (dto != null ){
+            //如果能找到收藏信息，那么判断置顶字段的值如果原值为0则设置为1反之设置为0
+            if(dto.getTop() == 0){
+                collectDTO.setTop(1);
+            }else {
+                collectDTO.setTop(0);
+            }
+            int collect = collectMapper.top(collectDTO);
+            if (collect ==1 ){
+                return collectDTO;
+            }else {
+                throw new MeExceptions(MeErrorCode.SYS_ERROR);
+            }
+        }
+        return null;
     }
 
     @Override

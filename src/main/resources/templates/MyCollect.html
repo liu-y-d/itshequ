@@ -23,7 +23,7 @@
                 <div class="media"  th:each="post:${collects}">
                     <div class="media-body">
                         <h4 class="media-heading" >
-                            <a th:href="@{'/post/'+ ${post.post.id}}" th:text="${post.post.title}" ></a>
+                            <a th:href="@{'/post/'+ ${post.post.id}}" th:text="${post.post.title}" ></a><span th:if="${post.top == 1}" class="label label-success" style="margin-left: 10px">置顶</span>
                         </h4>
                         [[${post.post.description}]]<br/>
                         <span class="text-desc">

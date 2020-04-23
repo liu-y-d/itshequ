@@ -8,5 +8,6 @@ public class CollectDTO {
     private Long id;
     private Long userId;
     private Long postId;
+    private Integer top;
     private Post post;
 }

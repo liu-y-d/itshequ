@@ -14,7 +14,7 @@ public class TagCache {
         ArrayList<TagDTO> tagDTOS = new ArrayList<>();
         TagDTO cuisine = new TagDTO();
         cuisine.setTagClass("菜系");
-        cuisine.setTags(Arrays.asList("川菜","粤菜","鲁菜","苏菜","闽菜","浙菜","湘菜","徽菜","川菜","粤菜","鲁菜","苏菜","闽菜","浙菜","湘菜","徽菜","川菜","粤菜","鲁菜","苏菜","闽菜","浙菜","湘菜","徽菜"));
+        cuisine.setTags(Arrays.asList("川菜","粤菜","鲁菜","苏菜","闽菜","浙菜","湘菜","徽菜"));
         tagDTOS.add(cuisine);
         TagDTO taste = new TagDTO();
         taste.setTagClass("口味");

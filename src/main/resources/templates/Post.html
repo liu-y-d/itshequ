@@ -28,11 +28,11 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <h3><span th:text="${postDTO.title}"></span></h3>
                     <span class="text-desc">
-                    标签：<span th:text="${postDTO.tag}"></span> |
-                    作者：<span th:text="${postDTO.user.name}"></span> |
-                    发布时间：<span th:text="${#dates.format(postDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> |
-                    阅读数：<span th:text="${postDTO.watchCount}"></span> |
-                    点赞数：<span th:text="${postDTO.likeCount}"></span>
+                    标签：<span th:text="${postDTO.tag}" class="blue"></span> |
+                    作者：<span th:text="${postDTO.user.name}" class="blue"></span> |
+                    发布时间：<span th:text="${#dates.format(postDTO.gmtCreate,'yyyy-MM-dd HH:mm')}" class="blue"></span> |
+                    阅读数：<span th:text="${postDTO.watchCount}" class="blue"></span> |
+                    点赞数：<span th:text="${postDTO.likeCount}" class="blue"></span>
                 </span>
                     <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="post-view">
@@ -59,6 +59,10 @@
                            onclick="collectFunction(); return false;"><span
                                 th:class="${collectColor == '1'?'glyphicon glyphicon-star-empty changeColor':'glyphicon glyphicon-star-empty'}"
                                 aria-hidden="true" id="collect"></span>&nbsp;&nbsp;收藏</a>
+                        <a th:if="${session.user !=null && top == '1' }" class="edit-a full-righ"
+                           onclick="topFunction(); return false;"><span
+                                th:class="${topColor == '1'?'glyphicon glyphicon-eject changeColor':'glyphicon glyphicon-eject'}"
+                                aria-hidden="true" id="top"></span>&nbsp;&nbsp;置顶</a>
                     </div>
 
                 </div>
@@ -144,7 +148,7 @@
                 </div>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
-                    <h4>相关问题</h4>
+                    <h4>相关帖子</h4>
                     <ul th:each="related:${relatedPost}" style="list-style: none; padding: 0px">
                         <a th:href="@{'/post/'+${related.id}}" style="text-decoration: none">
                             <li th:text="${related.title}">Cras justo odio</li>
@@ -303,6 +307,25 @@
                 } else {
                     $("#collect").css("color", "blue");
                     alert("收藏成功");
+                }
+                window.location.reload();
+            }
+        });
+    }
+    function topFunction() {
+        var postId = $("#post_id").val();
+        $.ajax({
+            type: "GET",
+            url: "/top/" + postId,
+            success: function (data) {
+                var top = JSON.parse(data);
+                console.log(top);
+                if (top.top === 0) {
+                    $("#top").css("color", "#999999");
+                    alert("成功取消置顶");
+                } else {
+                    $("#top").css("color", "blue");
+                    alert("收藏置顶");
                 }
             }
         });

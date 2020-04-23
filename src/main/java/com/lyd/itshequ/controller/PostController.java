@@ -66,7 +66,14 @@ public class PostController {
 			collectDTO.setUserId(user.getId());
 			CollectDTO collect = collectService.getCollectDTO(collectDTO);
 			if (collect!=null){
+				if (collect.getTop()==1){
+					model.addAttribute("topColor","1");
+				}else {
+					model.addAttribute("topColor","0");
+
+				}
 				model.addAttribute("collectColor","1");
+				model.addAttribute("top","1");
 			}else {
 				model.addAttribute("collectColor","0");
 			}

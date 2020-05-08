@@ -106,6 +106,13 @@
                 2、在不同贴吧发帖，还需要遵循当前贴吧吧主对该吧的相关规定。
                 3、不能在贴吧中发表含有猥亵、色情、人身攻击和反政府言论等非法或侵权言论的信息；
             </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px">
+                <h2><span class="glyphicon glyphicon glyphicon-fire" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;UP排行</h2>
+                <hr>
+                <ul class="list-group" th:each="UPLeaderBoard:${UPLeaderBoard}">
+                    <li class="list-group-item"><a th:href="@{'/post/'+ ${UPLeaderBoard.id}}" th:text="${UPLeaderBoard.title}" ></a><span class="badge" style="color:red;background:lightcoral;">[[${UPLeaderBoard.likeCount}]]</span></li>
+                </ul>
+            </div>
         </div>
 
     </div>

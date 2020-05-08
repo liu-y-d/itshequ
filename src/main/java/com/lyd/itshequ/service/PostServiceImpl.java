@@ -162,4 +162,10 @@ public class PostServiceImpl implements PostService {
 		}).collect(Collectors.toList());
 		return postDTOS;
 	}
+
+	@Override
+	public List<Post> UPLeaderBoard() {
+		List<Post> posts = postMapper.UPLeaderBoard();
+		return posts;
+	}
 }

@@ -8,5 +8,5 @@ public class QiNiu {
     //    七牛存储空间名
     public static final String bucket = "meal-home";
     //    七牛默认域名
-    public static final String domain = "http://q8tsydyrw.bkt.clouddn.com/";
+    public static final String domain = "http://q9zw8x3s3.bkt.clouddn.com/";
 }

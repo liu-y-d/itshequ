@@ -35,4 +35,8 @@ public interface PostMapper {
 
 	@Select("select * from post where title LIKE CONCAT('%',#{search},'%') order by gmt_create desc limit #{offSize},#{pageSize}")
 	List<Post> getPostBySearch(String search, Integer offSize, Integer pageSize);
+
+	@Select("select * from post order by like_count desc limit 0, 8")
+	List<Post> UPLeaderBoard();
+
 }

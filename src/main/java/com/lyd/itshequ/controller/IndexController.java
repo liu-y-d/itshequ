@@ -43,13 +43,19 @@ public class IndexController {
 		PageDTO pageDTO = postService.getPostAll(search,page,pageSize);
 		//查询通知数
 		User user = (User) request.getSession().getAttribute("user");
+		//查询排行榜
+		List<Post> UPLeaderBoard = postService.UPLeaderBoard();
 		if(user == null){
 			model.addAttribute("posts", pageDTO);
+			model.addAttribute("UPLeaderBoard", UPLeaderBoard);
 			return "Index";
 		}
+
+
 		Integer notifyNumber = notificationService.queryNotifyNumber(user.getId(), NotificationStatusEnum.UNREAD.getStatus());
 		model.addAttribute("notifyNumber",notifyNumber);
 		model.addAttribute("posts", pageDTO);
+		model.addAttribute("UPLeaderBoard", UPLeaderBoard);
 		return "Index";
 	}
 	@GetMapping("/toLogin")

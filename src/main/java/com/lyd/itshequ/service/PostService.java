@@ -16,4 +16,5 @@ public interface PostService {
     PostDTO incView(Long id);
 
 	List<PostDTO> selectByRelated(PostDTO postById);
+	List<Post> UPLeaderBoard();
 }
